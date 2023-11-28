@@ -1,4 +1,4 @@
-FROM ros:kinetic-perception
+FROM ros:noetic-perception
 
 ENV CERES_VERSION="1.12.0"
 ENV CATKIN_WS=/root/catkin_ws
@@ -7,12 +7,14 @@ ENV CATKIN_WS=/root/catkin_ws
 RUN   if [ "x$(nproc)" = "x1" ] ; then export USE_PROC=1 ; \
       else export USE_PROC=$(($(nproc)/2)) ; fi && \
       apt-get update && apt-get install -y \
+      git \
       cmake \
       libatlas-base-dev \
       libeigen3-dev \
       libgoogle-glog-dev \
       libsuitesparse-dev \
-      python-catkin-tools \
+      python3-catkin-tools \
+      python3-osrf-pycommon \
       ros-${ROS_DISTRO}-cv-bridge \
       ros-${ROS_DISTRO}-image-transport \
       ros-${ROS_DISTRO}-message-filters \
