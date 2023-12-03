@@ -1,0 +1,29 @@
+<launch>
+
+  <arg name="vins_fusion_screen_print" 	default="true"/>
+  <arg name="vins_loop_closure" 	default="false"/> <!-- NOTE: Loop closure doesn't work at this time-->
+
+  <arg if="$(arg vins_fusion_screen_print)"     name="vins_output" 	value="screen"/> 
+  <arg unless="$(arg vins_fusion_screen_print)" name="vins_output" 	value="log"/> 
+
+<!-- LOAD VINS-FUSION-->
+  <group ns="vins"> 
+    <!-- 1. vins node -->
+    <node name="vins_estimator" pkg="vins" type="vins_node" args="/config_files/vins_config.yaml" output="$(arg vins_output)" required="true">
+      <remap from="/vins_cam_switch" to="vins_cam_switch" />
+      <remap from="/vins_imu_switch" to="vins_imu_switch" />
+      <remap from="/vins_restart" to="vins_restart" />
+      <remap from="/feature_tracker/feature" to="feature_tracker/feature" />
+    </node> 
+
+    <!-- 2. loop closure (optional) -->
+    <!--<node if="$(arg vins_loop_closure)" name="loop_fusion" pkg="loop_fusion" type="loop_fusion_node" args="/config_files/vins_config.yaml" output="$(arg vins_output)" >
+      <remap from="/vins_estimator/extrinsic" to="vins_estimator/extrinsic" />
+      <remap from="/vins_estimator/keyframe_point" to="vins_estimator/keyframe_point" />
+      <remap from="/vins_estimator/keyframe_pose" to="vins_estimator/keyframe_pose" />
+      <remap from="/vins_estimator/margin_cloud" to="vins_estimator/margin_cloud" />
+      <remap from="/vins_estimator/odometry" to="vins_estimator/odometry" />
+    </node> -->
+    <!-- Note: Better turned off -->
+  </group>-->
+</launch>
